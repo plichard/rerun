@@ -129,8 +129,15 @@ impl FileSystem for &'static MemFileSystem {
         let path = path.as_ref().clean();
         let files = self.files.read();
         let files = files.as_ref().unwrap();
-        ensure!(files.contains_key(&path), "file does not exist at {path:?}",);
-        Ok(path)
+        // TODO(plichard): Fix this when creating the path
+        // use the tail of the path (this happens when rerun is a submodule)
+        for (k, _) in files.iter() {
+            if path.ends_with(k) {
+                return Ok(k.clone());
+            }
+        }
+
+        anyhow::bail!("file does not exist at {path:?}");
     }
 
     fn exists(&self, path: impl AsRef<Path>) -> bool {
