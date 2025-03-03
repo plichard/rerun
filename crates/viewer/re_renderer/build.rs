@@ -122,7 +122,7 @@ fn main() {
     cfg_aliases::cfg_aliases! {
         native: { not(target_arch = "wasm32") },
         web: { target_arch = "wasm32" },
-        load_shaders_from_disk: { all(native, debug_assertions) } // Shader reloading is only supported on native-debug currently.
+        load_shaders_from_disk: {false},//{ all(native, debug_assertions) } // Shader reloading is only supported on native-debug currently.
     }
 
     if !should_run() {
